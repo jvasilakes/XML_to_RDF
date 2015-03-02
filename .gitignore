@@ -1,0 +1,5 @@
+notes.txt
+*.ttl
+*.pyc
+*.xml
+.*.swp
