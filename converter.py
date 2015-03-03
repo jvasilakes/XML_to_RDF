@@ -18,7 +18,7 @@ import post
 
 data_file = "Posts.xml"
 
-rdf_header = u'''@prefix dc: <http://purl.org.dc/elements/1.1/> .
+rdf_header = u'''@prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix sioc: <http://rdfs.org/sioc/ns#> .
 @prefix tsioc: <http://rdfs.org/sioc/types#> .
 '''
@@ -32,7 +32,7 @@ def main():
     # Separate posts into questions and answers.
     # Classify based on existence of 'AnswerCount' (questions)
     #   or 'ParentId' (answers). If neither, skip it (there are
-    #   some random posts that aren't either.
+    #   some random posts that aren't either).
     questions = []
     answers = []
     for child in root:
@@ -51,33 +51,35 @@ def main():
         for q in questions:
             # Check to which question this is an answer.
             if a.parent_Id == q.Id:
-                q.attribs[u"tsioc:Answer"].append(a)
+                q.attribs[u"sioc:has_reply"].append(a)
                 a.attribs[u"sioc:has_parent"] = q
                 # Check if this is the best answer to that question.
                 try:
                     # Quotes around a.Id are needed for a valid comparison.
-                    if '"' + a.Id + '"' == q.attribs[u"tsioc:BestAnswer"]:
-                        q.attribs[u"tsioc:BestAnswer"] = a
+                    if a.Id == q.best_answer_Id:
+                        #a.type_str = u"tsioc:BestAnswer"
+                        a.best_answer = True
                 except:
                     pass
 
     # Write some turtle!
     # See notes.txt for what I have to change about this.
-    with open("outfile.ttl", "w") as outfile:
+    with open("arduino_rdf.ttl", "w") as outfile:
 
         # First write the header.
         outfile.write(rdf_header + '\n')
 
-        for q in questions[:5]:
+        for q in questions:
             for attrib in q.get_attribs_string():
                 outfile.write(attrib)
-            outfile.write('\n')
+            outfile.write('\n\n')
 
-        for a in answers[:5]:
+        for a in answers:
             for attrib in a.get_attribs_string():
                 outfile.write(attrib)
-            outfile.write('\n')
+            outfile.write('\n\n')
 
+        
 
 if __name__ == '__main__':
     main()
