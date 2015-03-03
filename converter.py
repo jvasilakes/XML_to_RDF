@@ -21,6 +21,8 @@ data_file = "Posts.xml"
 rdf_header = u'''@prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix sioc: <http://rdfs.org/sioc/ns#> .
 @prefix tsioc: <http://rdfs.org/sioc/types#> .
+@prefix db: <http://dbpedia.org/resource/> .
+@prefix sws: <http://vocab.inf.ed.ac.uk/sws#> .
 '''
 
 def main():
@@ -55,9 +57,7 @@ def main():
                 a.attribs[u"sioc:has_parent"] = q
                 # Check if this is the best answer to that question.
                 try:
-                    # Quotes around a.Id are needed for a valid comparison.
                     if a.Id == q.best_answer_Id:
-                        #a.type_str = u"tsioc:BestAnswer"
                         a.best_answer = True
                 except:
                     pass
