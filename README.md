@@ -4,4 +4,4 @@ Currently only works with the 'Posts.xml' file from a given data dump.
 Written specifically to convert arduino.stackexchange.com's post data.
 
 Usage:
-./converter.py <Posts.xml>
+./converter.py \<Posts.xml\>
