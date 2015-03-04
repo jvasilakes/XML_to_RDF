@@ -15,7 +15,14 @@ import xml.etree.ElementTree as ET
 # Local import
 import post
 
-data_file = "Posts.xml"
+try:
+    data_file = sys.argv[1]
+    sys.stderr.write("Converting {}...\n" .format(data_file))
+except:
+    sys.stderr.write("Usage: ./converter.py <Posts.xml>\n")
+    exit(1)
+
+outfile = "arduino_data.ttl"
 
 rdf_header = u'''@prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix sioc: <http://rdfs.org/sioc/ns#> .
@@ -62,22 +69,23 @@ def main():
                     pass
 
     # Write some turtle!
-    with open("arduino_rdf.ttl", "w") as outfile:
+    with open(outfile, "w") as fp:
 
         # First write the header.
-        outfile.write(rdf_header + '\n')
+        fp.write(rdf_header + '\n')
 
         for q in questions:
             for attrib in q.get_attribs_string():
-                outfile.write(attrib)
-            outfile.write('\n\n')
+                fp.write(attrib)
+            fp.write('\n\n')
 
         for a in answers:
             for attrib in a.get_attribs_string():
-                outfile.write(attrib)
-            outfile.write('\n\n')
+                fp.write(attrib)
+            fp.write('\n\n')
 
-        
+    sys.stderr.write("RDF written to {}\n" .format(outfile))
+
 
 if __name__ == '__main__':
     main()
