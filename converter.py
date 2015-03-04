@@ -1,12 +1,11 @@
 #! /usr/bin/env python2.7
 
-#############################################
-#                                           #
-# Python converter from Stack Exchange XML  #
-#    data dump to RDF turtle/Notation3.     #
-#         Author: Jake Vasilakes            #
-#                                           #
-#############################################
+'''
+ Python converter from Stack Exchange XML  
+    data dump to RDF turtle/Notation3.     
+         Author: Jake Vasilakes            
+'''
+
 
 from __future__ import print_function
 
@@ -63,7 +62,6 @@ def main():
                     pass
 
     # Write some turtle!
-    # See notes.txt for what I have to change about this.
     with open("arduino_rdf.ttl", "w") as outfile:
 
         # First write the header.

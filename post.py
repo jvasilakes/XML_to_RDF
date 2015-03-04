@@ -138,6 +138,7 @@ class Post(object):
         # Make sure last item printed for this URI ends with a full-stop.
         attribs_strs[-1] = attribs_strs[-1][:-2] + '.'
 
+        # Put all RDF class assignments first.
         first_line =  '{0} {1} {2} ;\n' .format(self.uri, "a", u"tsioc:Post")
         attribs_strs.insert(0, first_line)
         second_line = '{0} {1} {2} ;\n' .format('\t', "a", self.type_str)
@@ -164,7 +165,8 @@ class Answer(Post):
         self.parent_Id = attrib_dict['ParentId']
         self.attribs = self._parse(attrib_dict)
         self.type_str = u"tsioc:Answer"
-        # Is assigned true if this answer is also the best answer.
+        # Is assigned True if this answer is also the 
+        # best answer to some question.
         self.best_answer = False
 
 
