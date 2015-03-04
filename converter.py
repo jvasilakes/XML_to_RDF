@@ -24,7 +24,8 @@ except:
 
 outfile = "arduino_data.ttl"
 
-rdf_header = u'''@prefix dc: <http://purl.org/dc/elements/1.1/> .
+rdf_header = u'''@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix sioc: <http://rdfs.org/sioc/ns#> .
 @prefix tsioc: <http://rdfs.org/sioc/types#> .
 @prefix db: <http://dbpedia.org/resource/> .

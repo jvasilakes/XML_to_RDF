@@ -11,7 +11,8 @@ def create_uri(id_string, entity_type=None):
     Creates a new uri from a given string.
     '''
 
-    existing_uris = {u'ethernet': u'db:Ethernet',
+    existing_uris = {
+        u'ethernet': u'db:Ethernet',
         u'arduino': u'db:Arduino',
         u'linux': u'db:Linux',
         u'c++': u'db:C++',
@@ -20,6 +21,8 @@ def create_uri(id_string, entity_type=None):
 
     if entity_type is None:
         uri = u'sws:{}' .format(id_string)
+    elif entity_type == u"Post":
+        uri = u'sws:Post{}' .format(id_string)
     else:
         for key in existing_uris.keys():
             if key in entity_type:
@@ -76,8 +79,17 @@ class Post(object):
                 pred = term.encode('utf8')
                 obj = format_str(attrib_dict[key]).encode('utf8')
                 if key == u"Tags":
+                    # Find all distinct tags.
                     obj = parse_tags(obj)
+                    # Create a URI for each.
                     obj = [create_uri(tag, tag) for tag in obj]
+                if key == u"CreationDate":
+                    # Get rid of the decimal at the end.
+                    obj = re.match(r'(.+)\.\d+', obj).group(1)
+                    # Append data type.
+                    obj = obj + u'"xsd:dateTime'
+                    #print(obj)
+                    #raw_input()
                 attribs[pred] = obj
         return attribs
 
@@ -95,7 +107,7 @@ class Post(object):
         for pred,obj in self.attribs.items():
 
             # E.g. 'dc:title' or 'sioc:content'
-            if type(obj) == str:
+            if type(obj) == str or type(obj) == unicode:
                 # I always want title first for questions.
                 if pred == u'dc:title':
                     string = '{0} {1} {2} ;\n' .format('\t', pred, obj)
